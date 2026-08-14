@@ -131,7 +131,8 @@ const STR = {
     optionsLegend: 'Opties', formatLabel: 'Formaat',
     sizeL: 'Groot', sizeS: 'Compact', sizeA6: 'A6-kaarten',
     lblMargin: 'Printmarge', lblPaper: 'Papier',
-    paperOpts: { a4: 'A4 — 4 kaarten per vel', a6: 'A6 — 1 per vel (105 × 148)', '10x15': '10 × 15 cm — 1 per vel (100 × 150)' },
+    paperOpts: { a4: 'A4 — 4 kaarten per vel', a6: 'A6 — 1 per vel (105 × 148)',
+      '10x15': '10 × 15 cm — 1 per vel (100 × 150)', '4x6': '4 × 6 inch — 1 per vel (101,6 × 152,4)' },
     marginOpts: { 0: '0 mm — randloos', 3: '3 mm — krap', 4: '4 mm — standaard', 6: '6 mm', 8: '8 mm — veilig' },
     lblHigher: 'Tekst "op hoger niveau"', lblMaterial: 'Materiaalcomponent voluit',
     lblFacts: 'Balk met schade/redding/gebied', lblIndex: 'Overzichtskaart met de lijst',
@@ -193,7 +194,8 @@ const STR = {
     optionsLegend: 'Options', formatLabel: 'Format',
     sizeL: 'Large', sizeS: 'Compact', sizeA6: 'A6 cards',
     lblMargin: 'Print margin', lblPaper: 'Paper',
-    paperOpts: { a4: 'A4 — 4 cards per sheet', a6: 'A6 — 1 per sheet (105 × 148)', '10x15': '10 × 15 cm — 1 per sheet (100 × 150)' },
+    paperOpts: { a4: 'A4 — 4 cards per sheet', a6: 'A6 — 1 per sheet (105 × 148)',
+      '10x15': '10 × 15 cm — 1 per sheet (100 × 150)', '4x6': '4 × 6 inch — 1 per sheet (101.6 × 152.4)' },
     marginOpts: { 0: '0 mm — borderless', 3: '3 mm — tight', 4: '4 mm — standard', 6: '6 mm', 8: '8 mm — safe' },
     lblHigher: '"At higher levels" text', lblMaterial: 'Full material component',
     lblFacts: 'Damage/save/area bar', lblIndex: 'Index card with the list',
@@ -1088,6 +1090,7 @@ const PAPERS = {
   a4: { w: 210, h: 297, per: 4 },
   a6: { w: 105, h: 148, per: 1 },
   '10x15': { w: 100, h: 150, per: 1 },
+  '4x6': { w: 101.6, h: 152.4, per: 1 },   // 4 × 6 inch; drivers noemen dit óók "10x15"
 };
 let paper = PAPERS[localStorage.getItem('spc.paper')] ? localStorage.getItem('spc.paper') : 'a4';
 const cardsPerSheet = () => PAPERS[paper].per;
