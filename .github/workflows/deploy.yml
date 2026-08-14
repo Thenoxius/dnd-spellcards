@@ -33,7 +33,11 @@ jobs:
         run: sed -i "s/__BUILD__/${GITHUB_RUN_ID}/g" index.html
       - name: Rauwe data uit de deploy weren
         run: rm -rf data/srd
+      # enablement: zet Pages zelf aan als dat nog niet is gebeurd — anders faalt de
+      # eerste deploy van een nieuwe repo met "Get Pages site failed / Not Found"
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
