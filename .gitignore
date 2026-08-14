@@ -1,0 +1,4 @@
+node_modules/
+# Ruwe SRD-download van scripts/update-data.mjs.
+# data/spells.js (het gecompileerde resultaat) wordt wél gecommit als fallback.
+data/srd/

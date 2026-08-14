@@ -1,0 +1,41 @@
+name: Deploy naar GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '23 4 * * 1'   # wekelijks ma 04:23 UTC: verse SRD-data
+  workflow_dispatch:        # + handmatig te starten via Actions → Run workflow
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: SRD-data bijwerken
+        run: node scripts/update-data.mjs || echo "::warning::Data-update mislukt — deploy gebruikt de gecommitte data."
+      - name: Cache-busting versie invullen
+        run: sed -i "s/__BUILD__/${GITHUB_RUN_ID}/g" index.html
+      - name: Rauwe data uit de deploy weren
+        run: rm -rf data/srd
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

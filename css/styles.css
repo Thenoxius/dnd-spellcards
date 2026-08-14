@@ -1,0 +1,588 @@
+/* ============ Grimoire Forge — D&D 5e spreukkaarten ============ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+/* moet display:flex/grid van eigen regels verslaan */
+[hidden] { display: none !important; }
+
+:root {
+  --bg: #14131c;
+  --bg-panel: #1e1c29;
+  --bg-panel-2: #272437;
+  --ink: #16140f;
+  --parchment: #f6f2e6;
+  --parchment-dark: #ebe5d3;
+  --gold: #b8933d;
+  --gold-bright: #dfba63;
+  --gold-dim: #856c2e;
+  --crimson: #9b2f31;
+  --text-dim: #a9a2c0;
+  --card-rule: #c8c0aa;
+
+  /* Schoolkleuren — de acht scholen van magie. Donker genoeg om wit op te drukken
+     en onderling te onderscheiden, ook in grijstinten. */
+  --sch-abjuration:    #2f5d8f;
+  --sch-conjuration:   #8a6a1f;
+  --sch-divination:    #35707c;
+  --sch-enchantment:   #8e2f68;
+  --sch-evocation:     #a8401f;
+  --sch-illusion:      #5b3f8e;
+  --sch-necromancy:    #37613f;
+  --sch-transmutation: #7a5230;
+
+  --serif: 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --sans: 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+html { height: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  background-image: radial-gradient(ellipse at 18% -10%, #2b2540 0%, var(--bg) 55%);
+  color: #e7e3f2;
+  min-height: 100%;
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 20px;
+  background: linear-gradient(180deg, #2a2440, #1a1726);
+  border-bottom: 2px solid var(--gold-dim);
+  box-shadow: 0 2px 12px rgba(0,0,0,.5);
+  position: sticky; top: 0; z-index: 10;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  font-size: 26px; color: var(--gold-bright); line-height: 1;
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border: 2px solid var(--gold-dim); border-radius: 4px;
+  background: radial-gradient(circle at 30% 30%, #3d3457, #1f1a2e);
+  transform: rotate(45deg);
+}
+.brand-mark > span { transform: rotate(-45deg); }
+.brand h1 {
+  font-family: var(--serif); font-size: 22px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold-bright); font-weight: 700;
+}
+.tagline { font-size: 12px; color: var(--text-dim); letter-spacing: .5px; }
+.topbar-actions { display: flex; align-items: center; gap: 14px; }
+.data-version { font-size: 11px; color: var(--text-dim); }
+
+.lang-toggle { display: flex; border: 1px solid var(--gold-dim); border-radius: 4px; overflow: hidden; }
+.lang-btn {
+  background: transparent; border: 0; color: var(--text-dim);
+  font: 600 11px var(--sans); letter-spacing: 1px; padding: 5px 9px; cursor: pointer;
+}
+.lang-btn.active { background: var(--gold-dim); color: #fff; }
+
+.btn {
+  font: 600 13px var(--sans); letter-spacing: .5px;
+  padding: 9px 14px; border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--gold-dim); background: var(--bg-panel-2); color: #ece6d6;
+}
+.btn:hover { border-color: var(--gold-bright); }
+.btn-gold {
+  background: linear-gradient(180deg, #c9a24b, #8f7028);
+  border-color: #6c531c; color: #17130a; font-weight: 700;
+}
+.btn-gold:hover { background: linear-gradient(180deg, #dbb45c, #a07f30); }
+.btn-ghost { background: transparent; }
+
+/* ---------- Layout ---------- */
+main { display: flex; align-items: flex-start; gap: 0; }
+.panel {
+  width: 360px; flex: 0 0 360px;
+  padding: 16px; margin: 16px;
+  background: var(--bg-panel);
+  border: 1px solid #372f4d;
+  border-radius: 6px;
+  position: sticky; top: 78px;
+  max-height: calc(100vh - 96px); overflow-y: auto;
+}
+.panel::-webkit-scrollbar { width: 10px; }
+.panel::-webkit-scrollbar-thumb { background: #3d3557; border-radius: 5px; }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+.tab {
+  flex: 1; background: transparent; border: 0; border-bottom: 2px solid #372f4d;
+  color: var(--text-dim); font: 600 13px var(--sans); letter-spacing: .5px;
+  padding: 9px 6px; cursor: pointer;
+}
+.tab.active { color: var(--gold-bright); border-bottom-color: var(--gold-bright); }
+
+.panel-label {
+  display: block; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px; font-weight: 600;
+}
+textarea, .add-row input, select {
+  width: 100%; background: #16141f; color: #e7e3f2;
+  border: 1px solid #3d3557; border-radius: 4px; padding: 8px 10px;
+  font-family: var(--sans); font-size: 13px;
+}
+textarea { height: 160px; resize: vertical; line-height: 1.5; }
+textarea:focus, input:focus, select:focus { outline: 1px solid var(--gold-dim); }
+.btn-row { display: flex; gap: 8px; margin-top: 10px; }
+.btn-row .btn { flex: 1; }
+.add-row { display: flex; gap: 6px; align-items: center; }
+
+/* min-inline-size: een fieldset krimpt standaard niet onder zijn min-content-breedte,
+   waardoor de knoppenrij hieronder de hele pagina breder maakte dan een telefoon. */
+.options {
+  border: 1px solid #372f4d; border-radius: 5px; padding: 10px 12px; margin-top: 14px;
+  min-inline-size: 0;
+}
+.options legend {
+  font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--gold); padding: 0 6px; font-weight: 600;
+}
+.opt-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 13px; }
+.opt-row input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--gold); flex: 0 0 auto; }
+.opt-name { flex: 0 0 84px; color: var(--text-dim); font-size: 12px; }
+.opt-row select { flex: 1; }
+.seg { display: flex; border: 1px solid #3d3557; border-radius: 4px; overflow: hidden; flex: 1; min-width: 0; }
+.seg-btn {
+  flex: 1; min-width: 0; background: transparent; border: 0; color: var(--text-dim);
+  font: 600 12px var(--sans); padding: 7px 4px; cursor: pointer;
+}
+.seg-btn.active { background: var(--gold-dim); color: #fff; }
+.scale-val { font-size: 11px; color: var(--text-dim); }
+/* Achterkant-instellingen: drie kleurvakjes + een bestandskiezer passen niet op één
+   regel in een paneel van 360px, laat staan op een telefoon — dus laten afbreken. */
+.back-opts { flex-wrap: wrap; }
+.back-opts .opt-name { flex: 0 0 auto; }
+input[type=color] {
+  width: 34px; height: 26px; padding: 1px; flex: 0 0 auto;
+  border: 1px solid #3d3557; border-radius: 4px; background: #16141f; cursor: pointer;
+}
+input[type=file] { max-width: 100%; min-width: 0; flex: 1 1 150px; font-size: 11px; color: var(--text-dim); }
+input[type=range] { flex: 1 1 90px; min-width: 0; accent-color: var(--gold); }
+.hint { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; margin-top: 8px; }
+.hint b { color: #d8d2e8; }
+.credits { font-size: 11px; color: #7d7594; margin-top: 12px; line-height: 1.5; }
+.status { margin-top: 12px; font-size: 12.5px; line-height: 1.6; }
+.status .warn { color: #e0a640; }
+.status .ok { color: #7fbf7f; }
+
+/* ---------- Filters + spreukenkiezer ---------- */
+.filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.filters .full { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 3px; }
+.field > span {
+  font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold);
+  font-weight: 600;
+}
+.lvl-range { display: flex; align-items: center; gap: 6px; }
+.lvl-range select { flex: 1; }
+.lvl-range i { color: var(--text-dim); font-style: normal; }
+
+/* Schoolchips: acht knopjes in de schoolkleur; uit = grijs */
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.chip {
+  border: 1px solid #3d3557; background: #16141f; color: var(--text-dim);
+  font: 600 10.5px var(--sans); letter-spacing: .4px;
+  padding: 4px 8px; border-radius: 999px; cursor: pointer;
+}
+.chip.on { background: var(--chip, #444); border-color: transparent; color: #fff; }
+
+.picker-tools {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.picker-tools .btn { padding: 5px 9px; font-size: 11.5px; }
+.picker-count { font-size: 11.5px; color: var(--text-dim); margin-left: auto; }
+
+.spelllist {
+  border: 1px solid #372f4d; border-radius: 5px;
+  max-height: 320px; overflow-y: auto; background: #16141f;
+}
+.spelllist::-webkit-scrollbar { width: 9px; }
+.spelllist::-webkit-scrollbar-thumb { background: #3d3557; border-radius: 5px; }
+.sl-group {
+  position: sticky; top: 0; z-index: 1;
+  background: #221f30; color: var(--gold);
+  font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 700;
+  padding: 5px 10px; border-bottom: 1px solid #372f4d;
+}
+.sl-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 10px; font-size: 12.5px; cursor: pointer; border-bottom: 1px solid #1f1c2b;
+}
+.sl-item:hover { background: #201d2c; }
+.sl-item input { accent-color: var(--gold); width: 14px; height: 14px; flex: 0 0 auto; }
+.sl-item .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sl-item.sel .nm { color: var(--gold-bright); font-weight: 600; }
+.sl-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; background: var(--dot, #555); }
+.sl-tag { font-size: 9.5px; letter-spacing: .6px; color: var(--text-dim); flex: 0 0 auto; }
+.sl-empty { padding: 18px 12px; text-align: center; color: var(--text-dim); font-size: 12.5px; }
+
+/* ---------- Kaartengebied ---------- */
+#cardsWrap { flex: 1; padding: 16px 20px 60px 4px; min-width: 0; }
+.cards { column-gap: 8mm; }
+.cards.size-l { column-count: 1; max-width: 190mm; margin: 0 auto; }
+.cards.size-s { column-count: 2; max-width: 300mm; margin: 0 auto; font-size: 0.88em; }
+
+/* A6-modus: 4 kaarten per A4-vel (2×2), inhoud schaalt passend binnen de vaste
+   kaarthoogte. De kaarten vullen het vel op de veiligheidsmarge na — die marge is
+   de rand die je printer niet kan bedrukken. */
+.cards.size-a6 { column-count: auto; display: block; max-width: none; }
+.a6sheet {
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  width: var(--sheet-w, 210mm); height: var(--sheet-h, 297mm);
+  padding: var(--sheet-margin, 4mm);
+  margin: 0 auto 6mm;
+}
+/* Eén kaart per vel (A6 of 10×15 cm): geen snijvel, elke kaart een eigen pagina.
+   Op het scherm zetten we de velletjes naast elkaar; bij het printen valt die
+   flexbox weg (staat in @media screen) zodat de paginering hetzelfde werkt. */
+.cards.size-a6.one-up .a6sheet { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+@media screen {
+  .cards.size-a6.one-up { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 6mm; }
+  .cards.size-a6.one-up > .skiptray { flex: 0 0 100%; }
+}
+/* onzichtbaar vel om een vervolgkaart op ware kaartmaat te kunnen meten */
+.a6sheet.measure { position: absolute; left: -9999px; top: 0; visibility: hidden; }
+.cards.size-a6 .card {
+  width: 100%; height: 100%; margin: 0;
+  display: flex; flex-direction: column;
+  font-size: 14px;          /* grotere basistekst; A6 heeft geen ruimte te verspillen */
+}
+.cards.size-a6 .card-head, .cards.size-a6 .statbar,
+.cards.size-a6 .facts, .cards.size-a6 .card-foot { flex: 0 0 auto; }
+.cards.size-a6 .card-body { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+
+/* Slankere kop/voet in A6-modus: alle gewonnen millimeters gaan naar de spreuktekst,
+   die anders wordt weggeschaald. */
+.cards.size-a6 .card-head { min-height: 0; padding: 5px 10px; }
+.cards.size-a6 .card-head h2 { font-size: 16px; letter-spacing: .8px; }
+.cards.size-a6 .card-head .sub-top { font-size: 7.5px; letter-spacing: 2px; }
+.cards.size-a6 .card-head .subtitle { font-size: 9.5px; margin-top: 1px; }
+.cards.size-a6 .lvl { width: 36px; height: 36px; }
+.cards.size-a6 .lvl b { font-size: 15px; }
+.cards.size-a6 .lvl span { font-size: 5.5px; }
+.cards.size-a6 .statbar .st { padding: 2px 4px; }
+.cards.size-a6 .statbar .st span { font-size: 6px; }
+.cards.size-a6 .statbar .st b { font-size: 9px; }
+.cards.size-a6 .card-body { padding: 6px 9px 3px; line-height: 1.36; }
+.cards.size-a6 .facts { padding: 2px 9px; font-size: 8.5px; }
+.cards.size-a6 .card-foot { padding: 2px 9px 3px; font-size: 8px; }
+.cards.size-a6 .ab { margin-bottom: 4px; }
+
+/* ---------- Kaart ---------- */
+.card {
+  break-inside: avoid;
+  background: var(--parchment);
+  color: var(--ink);
+  border: 1.5px solid #26221c;
+  border-radius: 5px;
+  margin: 0 0 8mm 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,.45);
+  overflow: hidden;
+  font-size: 12px; line-height: 1.45;
+  --sch: #4a4a4a;
+  /* zacht perkamentnerf-effect: twee heel lichte diagonalen over de basiskleur */
+  background-image:
+    repeating-linear-gradient(58deg, rgba(120,95,50,.035) 0 2px, transparent 2px 7px),
+    repeating-linear-gradient(-46deg, rgba(120,95,50,.028) 0 1px, transparent 1px 9px);
+}
+.card.sch-abjuration    { --sch: var(--sch-abjuration); }
+.card.sch-conjuration   { --sch: var(--sch-conjuration); }
+.card.sch-divination    { --sch: var(--sch-divination); }
+.card.sch-enchantment   { --sch: var(--sch-enchantment); }
+.card.sch-evocation     { --sch: var(--sch-evocation); }
+.card.sch-illusion      { --sch: var(--sch-illusion); }
+.card.sch-necromancy    { --sch: var(--sch-necromancy); }
+.card.sch-transmutation { --sch: var(--sch-transmutation); }
+
+.card.excluded { opacity: .35; }
+.card.excluded .card-head::after {
+  content: 'OVERGESLAGEN BIJ AFDRUKKEN';
+  position: absolute; inset: auto 8px 3px auto;
+  font-size: 8.5px; letter-spacing: 1px; color: #ffe9a8;
+}
+
+/* Kop — schoolkleur met een donker verloop erover, gouden onderrand */
+.card-head {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.16), rgba(0,0,0,.34)),
+    var(--sch);
+  border-bottom: 2px solid #b39449;
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+  min-height: 54px;
+}
+.card-head .school-icon {
+  flex: 0 0 auto; width: 26px; height: 26px; opacity: .92;
+  fill: #fff; filter: drop-shadow(0 1px 1px rgba(0,0,0,.4));
+}
+.card-head .title { flex: 1; min-width: 0; }
+.card-head h2 {
+  font-family: var(--serif); font-weight: 700; font-size: 19px;
+  letter-spacing: 1px; text-transform: uppercase; color: #fff; line-height: 1.12;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+.card-head .sub-top {
+  font-size: 8.5px; letter-spacing: 2.4px; text-transform: uppercase;
+  color: #ffeab8; margin-bottom: 2px; font-family: var(--serif);
+}
+/* De regel uit het spelersboek: "3rd-level evocation" — cursief, zoals in het boek */
+.card-head .subtitle {
+  font-family: var(--serif); font-style: italic; font-size: 11px;
+  letter-spacing: .3px; color: #ffeab8; margin-top: 2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* Niveaupenning: cantrips krijgen een ster in plaats van een cijfer */
+.lvl {
+  flex: 0 0 auto; text-align: center;
+  border: 1.5px solid #f0e6cd; border-radius: 50%;
+  width: 44px; height: 44px;
+  display: grid; place-content: center; align-content: center;
+  background: rgba(0,0,0,.42);
+  box-shadow: 0 1px 4px rgba(0,0,0,.45);
+}
+.lvl b { font-size: 17px; color: #fff; line-height: 1; font-family: var(--serif); }
+.lvl span { font-size: 6.5px; letter-spacing: 1px; color: #f4e9cf; text-transform: uppercase; margin-top: 1px; }
+
+/* Statbalk — de vier vaste spreukwaarden, altijd op dezelfde plek */
+.statbar {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--parchment-dark);
+  border-bottom: 1px solid var(--card-rule);
+}
+.statbar .st {
+  padding: 3px 6px; text-align: center; min-width: 0;
+  border-right: 1px solid var(--card-rule);
+}
+.statbar .st:last-child { border-right: 0; }
+.statbar .st span {
+  display: block; font-size: 7px; letter-spacing: 1.1px; text-transform: uppercase;
+  color: #6d6552; font-weight: 700;
+}
+.statbar .st b {
+  display: block; font-size: 10.5px; color: var(--ink); font-weight: 700;
+  line-height: 1.2; overflow-wrap: anywhere;
+}
+
+/* Body */
+.card-body { padding: 8px 11px 5px; }
+.fitbox { transform-origin: top left; }
+.fitbox.two-col { column-count: 2; column-gap: 9px; }
+.fitbox.two-col .ab { break-inside: avoid; }
+
+.badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 5px; }
+.badge {
+  font-size: 8px; letter-spacing: 1.1px; text-transform: uppercase; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px; color: #fff; background: #6b6558;
+}
+.badge.conc { background: var(--crimson); }
+.badge.ritual { background: #2f5d8f; }
+.badge.atk { background: #6d4b16; }
+
+.mat {
+  font-size: 10px; font-style: italic; color: #55503f;
+  border-left: 2px solid var(--sch); padding-left: 6px; margin-bottom: 6px;
+}
+.mat b { font-style: normal; letter-spacing: .6px; }
+
+.abilities > .ab { margin-bottom: 6px; }
+.ab p { margin-bottom: 4px; }
+.ab p:last-child { margin-bottom: 0; }
+.ab-head {
+  font-family: var(--serif); font-weight: 700; font-size: 10px;
+  letter-spacing: 1.6px; text-transform: uppercase;
+  color: #fff; background: var(--sch);
+  padding: 2px 7px; border-radius: 2px; margin-bottom: 3px;
+  display: inline-block;
+}
+.ab.higher { border-top: 1px solid var(--card-rule); padding-top: 5px; }
+.ab table.tbl { width: 100%; border-collapse: collapse; margin: 3px 0; font-size: .92em; }
+.ab table.tbl th, .ab table.tbl td { border: 1px solid var(--card-rule); padding: 1.5px 4px; text-align: left; }
+.ab table.tbl th { background: var(--parchment-dark); font-size: .92em; letter-spacing: .4px; }
+.cont-more { font-size: 9.5px; font-style: italic; color: #6d6552; text-align: right; }
+
+/* Snelle feiten: schade/genezing, redding, effectgebied — de dingen die je
+   midden in een gevecht wil zien zonder te lezen. */
+.facts {
+  display: flex; flex-wrap: wrap; gap: 4px 10px;
+  background: var(--parchment-dark);
+  border-top: 1px solid var(--card-rule);
+  padding: 3px 11px; font-size: 9.5px; color: #4a4436;
+}
+.facts b { color: var(--ink); }
+.facts .f::before { content: '◆ '; color: var(--sch); }
+
+.card-foot {
+  display: flex; justify-content: space-between; gap: 8px;
+  background: #2a2620; color: #cfc6ae;
+  padding: 3px 11px; font-size: 9px; letter-spacing: .8px; text-transform: uppercase;
+}
+.card-foot .right { color: #9a917c; }
+
+/* Overzichtskaart: de spreukenlijst zelf, met vakjes om af te strepen */
+.card.index .card-head { background: linear-gradient(180deg, #3b3450, #211d30); }
+.card.index .ix-lvl {
+  font-family: var(--serif); font-weight: 700; font-size: 10.5px; letter-spacing: 1.6px;
+  text-transform: uppercase; color: #fff; background: #3b3450;
+  padding: 2px 7px; border-radius: 2px; margin: 5px 0 3px; display: inline-block;
+}
+.card.index ul { list-style: none; }
+.card.index li {
+  display: flex; align-items: center; gap: 6px;
+  padding: 1px 0; border-bottom: 1px dotted var(--card-rule); font-size: 11px;
+}
+.card.index li .box {
+  width: 9px; height: 9px; border: 1px solid #6d6552; border-radius: 1px; flex: 0 0 auto;
+}
+.card.index li .ix-sch { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto; }
+.card.index li .ix-meta { margin-left: auto; font-size: 9px; color: #6d6552; flex: 0 0 auto; }
+
+/* ---------- Achterkanten (dubbelzijdig printen) ---------- */
+.cardback {
+  width: 100%; height: 100%; position: relative;
+  border: 1.5px solid #26221c; border-radius: 5px; overflow: hidden;
+  background-color: var(--border-color, #1c1830);
+  padding: 4mm;
+}
+.cardback-inner {
+  position: relative; width: 100%; height: 100%;
+  border-radius: 2.5mm; overflow: hidden;
+  border: 1px solid rgba(244,242,234,.4);
+  background-color: var(--back-color, #2b2540);
+  background-repeat: repeat; background-position: center;
+}
+.cardback-inner::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: var(--back-img, none);
+  background-repeat: var(--back-img-repeat, no-repeat);
+  background-size: var(--back-img-size, cover);
+  background-position: center;
+  pointer-events: none;
+}
+.cardback-inner.pat-stripes {
+  background-image: repeating-linear-gradient(45deg, var(--back-color2) 0 6px, transparent 6px 18px);
+}
+.cardback-inner.pat-dots {
+  background-image: radial-gradient(var(--back-color2) 16%, transparent 17%);
+  background-size: 16px 16px;
+}
+.cardback-inner.pat-grid {
+  background-image:
+    linear-gradient(var(--back-color2) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--back-color2) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+.cardback-inner.pat-crosshatch {
+  background-image:
+    repeating-linear-gradient(45deg, var(--back-color2) 0 1.5px, transparent 1.5px 13px),
+    repeating-linear-gradient(-45deg, var(--back-color2) 0 1.5px, transparent 1.5px 13px);
+}
+.cardback-inner.pat-stars {
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--back-color2) 9%, transparent 10%),
+    radial-gradient(circle at 0 0, var(--back-color2) 4%, transparent 5%);
+  background-size: 28px 28px, 14px 14px;
+}
+.cardback-inner.pat-scales {
+  background-image:
+    radial-gradient(circle at 50% 100%, transparent 47%, var(--back-color2) 48% 52%, transparent 53%),
+    radial-gradient(circle at 50% 100%, transparent 47%, var(--back-color2) 48% 52%, transparent 53%);
+  background-position: 0 0, 13px 7px;
+  background-size: 26px 14px;
+}
+.cardback-inner.pat-diamonds {
+  background-image:
+    linear-gradient(45deg, var(--back-color2) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--back-color2) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--back-color2) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--back-color2) 75%);
+  background-size: 26px 26px;
+}
+.cardback-inner.pat-runes {
+  background-image:
+    repeating-linear-gradient(0deg, var(--back-color2) 0 2px, transparent 2px 10px),
+    repeating-linear-gradient(90deg, var(--back-color2) 0 2px, transparent 2px 22px);
+  background-size: 22px 22px;
+}
+
+/* ---------- Overslaan-lade ---------- */
+.skiptray {
+  width: 210mm; max-width: 100%; margin: 8mm auto 0;
+  border-top: 1px dashed #4a4266; padding-top: 6mm;
+  display: flex; flex-wrap: wrap; gap: 6mm;
+}
+.skiptray-head {
+  width: 100%; font-size: 12px; color: var(--text-dim);
+  text-align: center; margin-bottom: 2mm;
+}
+.skiptray .card { flex: 0 0 auto; width: 88mm; }
+
+.cards:empty::after {
+  content: attr(data-empty);
+  display: block; text-align: center; color: var(--text-dim);
+  font-family: var(--serif); font-style: italic; padding: 80px 20px; font-size: 15px;
+}
+
+/* ---------- Mobiel / smalle schermen ---------- */
+@media (max-width: 860px) {
+  html { -webkit-text-size-adjust: 100%; }
+  body { overflow-x: clip; }
+
+  .topbar { padding: 8px 12px; gap: 10px; }
+  .brand { gap: 9px; min-width: 0; }
+  .brand-mark { width: 38px; height: 38px; font-size: 20px; flex: 0 0 auto; }
+  .brand h1 { font-size: 16px; letter-spacing: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tagline, .data-version { display: none; }
+  .topbar-actions { gap: 8px; flex: 0 0 auto; }
+  #btnPrint { padding: 9px 12px; font-size: 15px; }
+  #btnPrint .btn-txt { display: none; }
+
+  main { flex-direction: column; align-items: stretch; }
+  .panel {
+    width: auto; flex: none; margin: 10px; padding: 14px;
+    position: static; max-height: none; overflow: visible;
+  }
+  #cardsWrap { flex: none; width: 100%; padding: 0 10px 40px; overflow-x: auto; }
+
+  .cards.size-l, .cards.size-s { column-count: 1; max-width: 100%; margin: 0; }
+  .card { font-size: 13px; }
+
+  /* geen iOS-inzoom bij focus (font >= 16px) + grotere tikvlakken */
+  textarea, .add-row input, select { font-size: 16px; padding: 9px 10px; }
+  .btn { padding: 11px 14px; }
+  .picker-tools .btn { padding: 7px 10px; font-size: 12.5px; }
+  .seg-btn { padding: 9px 4px; font-size: 12.5px; }
+  .opt-row { padding: 7px 0; }
+  .opt-row input[type=checkbox] { width: 18px; height: 18px; }
+  .sl-item { padding: 8px 10px; font-size: 13.5px; }
+  .sl-item input { width: 17px; height: 17px; }
+  .spelllist { max-height: 46vh; }
+  .chip { padding: 6px 10px; font-size: 11.5px; }
+
+  /* A6-preview (210mm breed) past niet op een telefoon → binnen het blok scrollen */
+  .cards.size-a6 { width: max-content; }
+}
+
+@media (max-width: 420px) {
+  .brand h1 { font-size: 15px; }
+  .tab { font-size: 12px; padding: 9px 4px; letter-spacing: .3px; }
+  #cardsWrap { padding: 0 6px 30px; }
+  .filters { grid-template-columns: 1fr; }
+}
+
+/* ---------- Print ---------- */
+/* De @page-regel wordt door js/app.js gezet op basis van het gekozen formaat. */
+@media print {
+  body { background: #fff; }
+  .no-print, .topbar, .panel { display: none !important; }
+  main { display: block; }
+  #cardsWrap { padding: 0; }
+  .cards.size-l, .cards.size-s { max-width: none; margin: 0; }
+  .card { box-shadow: none; }
+  .card.excluded { display: none; }
+  .cards.size-a6 { display: block; margin: 0; }
+  .a6sheet { margin: 0; page-break-after: always; break-after: page; break-inside: avoid; }
+  .a6sheet:last-child { page-break-after: auto; break-after: auto; }
+  .cards.size-a6 .card { border-radius: 0; }
+  .a6sheet.measure { display: none !important; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

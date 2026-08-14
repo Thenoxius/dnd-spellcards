@@ -1,0 +1,11 @@
+{
+  "name": "grimoire-forge",
+  "version": "1.0.0",
+  "description": "Zet D&D 5e-spreuken om naar printbare spreukkaarten (volledig lokaal, zonder dependencies).",
+  "private": true,
+  "scripts": {
+    "update-data": "node scripts/update-data.mjs",
+    "compile-data": "node scripts/update-data.mjs --offline",
+    "serve": "python -m http.server 8318"
+  }
+}

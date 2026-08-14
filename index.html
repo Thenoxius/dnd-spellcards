@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grimoire Forge — D&D spreukkaarten</title>
+<link rel="stylesheet" href="css/styles.css?v=__BUILD__">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📜</text></svg>">
+</head>
+<body>
+
+<!-- Schoolsymbolen: één set paden, per kaart aangeroepen met <use> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Abjuratie: schild -->
+    <symbol id="s-abjuration" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm0 3.2L6.5 7.2V11c0 3.7 2.3 6.9 5.5 8.3 3.2-1.4 5.5-4.6 5.5-8.3V7.2L12 5.2z"/></symbol>
+    <!-- Conjuratie: portaal met verschijnende ster -->
+    <symbol id="s-conjuration" viewBox="0 0 24 24"><path d="M12 2c3.9 0 7 3.6 7 8s-3.1 8-7 8-7-3.6-7-8 3.1-8 7-8zm0 2c-2.6 0-5 2.8-5 6s2.4 6 5 6 5-2.8 5-6-2.4-6-5-6zm0 1.6l1.1 2.6 2.6 1.1-2.6 1.1L12 13l-1.1-2.6L8.3 9.3l2.6-1.1L12 5.6zM6 20h12v2H6v-2z"/></symbol>
+    <!-- Divinatie: oog -->
+    <symbol id="s-divination" viewBox="0 0 24 24"><path d="M12 5c5 0 9.3 3.2 11 7-1.7 3.8-6 7-11 7S2.7 15.8 1 12c1.7-3.8 6-7 11-7zm0 2C8.4 7 5.2 9 3.5 12c1.7 3 4.9 5 8.5 5s6.8-2 8.5-5c-1.7-3-4.9-5-8.5-5zm0 1.8a3.2 3.2 0 110 6.4 3.2 3.2 0 010-6.4z"/></symbol>
+    <!-- Betovering: hart met golf -->
+    <symbol id="s-enchantment" viewBox="0 0 24 24"><path d="M12 21S3 14.6 3 8.8A4.8 4.8 0 0112 6.4 4.8 4.8 0 0121 8.8C21 14.6 12 21 12 21zm-3.6-9.2h2.2l1-2.4 1.6 4 1-1.6h2.4"  fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 21S3 14.6 3 8.8A4.8 4.8 0 0112 6.4 4.8 4.8 0 0121 8.8C21 14.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.9"/></symbol>
+    <!-- Evocatie: bliksem/vlam -->
+    <symbol id="s-evocation" viewBox="0 0 24 24"><path d="M13 2L4 14h5l-2 8 9-12h-5l2-8z"/></symbol>
+    <!-- Illusie: masker -->
+    <symbol id="s-illusion" viewBox="0 0 24 24"><path d="M3 6h18v5c0 5-4 9-9 9s-9-4-9-9V6zm2.2 2v3c0 3.9 3 6.8 6.8 6.8s6.8-2.9 6.8-6.8V8H5.2zm2.6 2.4a1.7 1.7 0 110 3.4 1.7 1.7 0 010-3.4zm8.4 0a1.7 1.7 0 110 3.4 1.7 1.7 0 010-3.4z"/></symbol>
+    <!-- Necromantie: schedel -->
+    <symbol id="s-necromancy" viewBox="0 0 24 24"><path d="M12 2c4.4 0 8 3.4 8 7.6 0 2.6-1.3 4.6-3 5.9V19a2 2 0 01-2 2H9a2 2 0 01-2-2v-3.5c-1.7-1.3-3-3.3-3-5.9C4 5.4 7.6 2 12 2zm-3.2 6.4a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zm6.4 0a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM10 16v3h1.2v-3H10zm2.8 0v3H14v-3h-1.2z"/></symbol>
+    <!-- Transmutatie: kringloop van pijlen -->
+    <symbol id="s-transmutation" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 015.2 9l1.5 1.5A8 8 0 0012 4zm0 14v3l4-4-4-4v3a6 6 0 01-5.2-9L5.3 5.5A8 8 0 0012 18z"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar no-print">
+  <div class="brand">
+    <span class="brand-mark"><span>✶</span></span>
+    <div>
+      <h1>Grimoire Forge</h1>
+      <p class="tagline" id="tagline">D&amp;D 5e-spreuken &rarr; printbare kaarten</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span id="dataVersion" class="data-version"></span>
+    <div class="lang-toggle" role="group" aria-label="Taal">
+      <button id="langNL" class="lang-btn">NL</button>
+      <button id="langEN" class="lang-btn">EN</button>
+    </div>
+    <button id="btnPrint" class="btn btn-gold" title="Afdrukken (Ctrl+P)">🖨<span class="btn-txt"> Afdrukken</span></button>
+  </div>
+</header>
+
+<main>
+  <aside class="panel no-print">
+    <div class="tabs" role="tablist">
+      <button id="tabPick" class="tab active" role="tab">✶ Kiezen</button>
+      <button id="tabPaste" class="tab" role="tab">📜 Plakken</button>
+      <button id="tabOwn" class="tab" role="tab">✎ Eigen</button>
+    </div>
+
+    <!-- ---------- Tab 1: bladeren en aanvinken ---------- -->
+    <div id="panePick" class="tabpane">
+      <div class="filters">
+        <label class="field full"><span id="lblSearch">Zoeken</span>
+          <input id="fSearch" type="search" placeholder="Naam of tekst…" autocomplete="off"></label>
+        <label class="field"><span id="lblClass">Klasse</span>
+          <select id="fClass"></select></label>
+        <label class="field"><span id="lblSort">Sorteren</span>
+          <select id="fSort">
+            <option value="level">Niveau</option>
+            <option value="name">A–Z</option>
+            <option value="school">School</option>
+          </select></label>
+        <div class="field full"><span id="lblLevel">Niveau</span>
+          <div class="lvl-range">
+            <select id="fLvlMin"></select><i>—</i><select id="fLvlMax"></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips" id="fSchools"></div>
+
+      <div class="opt-row" style="padding-top:0">
+        <label class="opt-row" style="padding:0;gap:6px"><input type="checkbox" id="fConc"> <span id="lblFConc">Concentratie</span></label>
+        <label class="opt-row" style="padding:0;gap:6px"><input type="checkbox" id="fRitual"> <span id="lblFRitual">Ritueel</span></label>
+      </div>
+
+      <div class="picker-tools">
+        <button id="btnSelAll" class="btn btn-ghost">Alles kiezen</button>
+        <button id="btnSelNone" class="btn btn-ghost">Wissen</button>
+        <span class="picker-count" id="pickCount"></span>
+      </div>
+      <div id="spellList" class="spelllist"></div>
+    </div>
+
+    <!-- ---------- Tab 2: lijst plakken ---------- -->
+    <div id="panePaste" class="tabpane" hidden>
+      <label class="panel-label" for="listInput" id="panelLabel">Spreukenlijst (één naam per regel)</label>
+      <textarea id="listInput" spellcheck="false"
+        placeholder="Plak hier je spreuken…&#10;&#10;Fire Bolt&#10;Mage Hand&#10;• Shield&#10;1. Magic Missile&#10;Fireball (3rd level)"></textarea>
+      <div class="btn-row">
+        <button id="btnParse" class="btn btn-gold">✶ Zoek spreuken</button>
+        <button id="btnSample" class="btn btn-ghost">Voorbeeld</button>
+      </div>
+      <p class="hint" id="pasteHint">Namen worden ook herkend met tikfouten, nummering, bulletpunten of een
+      niveau-aanduiding erachter. Wat niet gevonden wordt, komt hieronder te staan.</p>
+    </div>
+
+    <!-- ---------- Tab 3: eigen spreuken ---------- -->
+    <div id="paneOwn" class="tabpane" hidden>
+      <p class="hint" id="ownHint" style="margin-top:0">De SRD bevat niet elke spreuk uit het spelersboek
+      (Hex, Chromatic Orb, Dissonant Whispers en een handvol andere ontbreken). Voeg ze hier zelf toe —
+      ze komen gewoon tussen de andere in de lijst te staan en worden lokaal bewaard.</p>
+      <div class="filters">
+        <label class="field full"><span id="lblOName">Naam</span><input id="oName" autocomplete="off"></label>
+        <label class="field"><span id="lblOLevel">Niveau</span><select id="oLevel"></select></label>
+        <label class="field"><span id="lblOSchool">School</span><select id="oSchool"></select></label>
+        <label class="field full"><span id="lblOClasses">Klassen (komma's)</span><input id="oClasses" autocomplete="off" placeholder="Warlock, Wizard"></label>
+        <label class="field"><span id="lblOTime">Bezweringstijd</span><input id="oTime" value="1 action" autocomplete="off"></label>
+        <label class="field"><span id="lblORange">Bereik</span><input id="oRange" value="60 feet" autocomplete="off"></label>
+        <label class="field"><span id="lblOComps">Componenten</span><input id="oComps" value="V, S" autocomplete="off"></label>
+        <label class="field"><span id="lblODur">Duur</span><input id="oDur" value="Instantaneous" autocomplete="off"></label>
+        <label class="field full"><span id="lblOMat">Materiaal</span><input id="oMat" autocomplete="off"></label>
+      </div>
+      <div class="opt-row" style="padding-top:0">
+        <label class="opt-row" style="padding:0;gap:6px"><input type="checkbox" id="oConc"> <span id="lblOConc">Concentratie</span></label>
+        <label class="opt-row" style="padding:0;gap:6px"><input type="checkbox" id="oRitual"> <span id="lblORitual">Ritueel</span></label>
+      </div>
+      <label class="panel-label" for="oDesc" id="lblODesc">Beschrijving (lege regel = nieuwe alinea)</label>
+      <textarea id="oDesc" spellcheck="false" style="height:120px"></textarea>
+      <label class="panel-label" for="oHigher" id="lblOHigher" style="margin-top:8px">Op hoger niveau</label>
+      <textarea id="oHigher" spellcheck="false" style="height:60px"></textarea>
+      <div class="btn-row">
+        <button id="btnOSave" class="btn btn-gold">✓ Opslaan</button>
+        <button id="btnONew" class="btn btn-ghost">Nieuw</button>
+        <button id="btnODel" class="btn btn-ghost">Verwijderen</button>
+      </div>
+      <div class="picker-tools" style="margin-top:10px">
+        <button id="btnOExport" class="btn btn-ghost">⭳ Exporteren</button>
+        <button id="btnOImport" class="btn btn-ghost">⭱ Importeren</button>
+        <input type="file" id="oImportFile" accept="application/json" hidden>
+      </div>
+      <div id="ownList" class="spelllist" style="max-height:180px"></div>
+    </div>
+
+    <!-- ---------- Opties (alle tabs) ---------- -->
+    <fieldset class="options">
+      <legend id="optionsLegend">Opties</legend>
+      <div class="opt-row">
+        <span class="opt-name" id="formatLabel">Formaat</span>
+        <div class="seg" role="group">
+          <button id="sizeL" class="seg-btn active">Groot</button>
+          <button id="sizeS" class="seg-btn">Compact</button>
+          <button id="sizeA6" class="seg-btn">A6-kaarten</button>
+        </div>
+      </div>
+      <p id="a6Hint" class="hint" hidden>A6-modus: kies hieronder je papier. Op <b>A4</b> komen er 4 kaarten op een
+      2×2-snijvel; op <b>A6</b> of <b>10 × 15 cm</b> krijgt elke kaart een eigen pagina en hoef je niets te snijden.
+      Zet in het printvenster <b>hetzelfde papierformaat</b> — 10 × 15 cm fotopapier is nét geen A6 (100 × 150 tegen
+      105 × 148 mm) en dan gaat de browser passend maken. Verder: <b>pagina's per blad: 1</b>, schaal <b>100%</b>
+      (niet "passend maken"), marges <b>Geen</b>, en <b>kop- en voettekst uit</b>. De veiligheidsmarge hieronder is de
+      rand die je printer niet kan bedrukken; kan hij randloos, zet hem dan op 0 mm.</p>
+      <div class="opt-row" id="paperRow" hidden>
+        <span class="opt-name" id="lblPaper">Papier</span>
+        <select id="sheetPaper">
+          <option value="a4">A4 — 4 kaarten per vel</option>
+          <option value="a6">A6 — 1 per vel (105 × 148)</option>
+          <option value="10x15">10 × 15 cm — 1 per vel (100 × 150)</option>
+        </select>
+      </div>
+      <div class="opt-row" id="marginRow" hidden>
+        <span class="opt-name" id="lblMargin">Printmarge</span>
+        <select id="sheetMargin">
+          <option value="0">0 mm — randloos</option>
+          <option value="3">3 mm — krap</option>
+          <option value="4">4 mm — standaard</option>
+          <option value="6">6 mm</option>
+          <option value="8">8 mm — veilig</option>
+        </select>
+        <span class="scale-val" id="marginNote"></span>
+      </div>
+      <label class="opt-row"><input type="checkbox" id="optHigher" checked> <span id="lblHigher">Tekst "op hoger niveau"</span></label>
+      <label class="opt-row"><input type="checkbox" id="optMaterial" checked> <span id="lblMaterial">Materiaalcomponent voluit</span></label>
+      <label class="opt-row"><input type="checkbox" id="optFacts" checked> <span id="lblFacts">Balk met schade/redding/gebied</span></label>
+      <label class="opt-row"><input type="checkbox" id="optIndex"> <span id="lblIndex">Overzichtskaart met de lijst</span></label>
+      <label class="opt-row"><input type="checkbox" id="optFill" checked> <span id="lblFill">Korte spreuken uitvergroten tot de kaart vol is</span></label>
+      <label class="opt-row"><input type="checkbox" id="optCont"> <span id="lblCont">Te lange spreuken doorlopen op de achterkant</span></label>
+      <p class="hint" id="contHint">Past een spreuk alleen door hem sterk te verkleinen, dan blijft op de voorkant staan
+      wat op ware grootte past en gaat de rest naar een vervolgkaart op de achterkant — dus daar geen motief.
+      Print dan <b>dubbelzijdig</b>, omslaan over de <b>lange zijde</b>.</p>
+      <label class="opt-row"><input type="checkbox" id="optBacks"> <span id="lblBacks">Kaart-achterkanten (dubbelzijdig printen)</span></label>
+      <div class="back-panel" id="backPanel" hidden>
+        <div class="opt-row back-opts">
+          <span class="opt-name" id="lblBackBorder">Rand</span>
+          <input type="color" id="backBorder" value="#1c1830">
+          <span class="opt-name" id="lblBackColor">Basis</span>
+          <input type="color" id="backColor" value="#2b2540">
+          <span class="opt-name" id="lblBackColor2">Accent</span>
+          <input type="color" id="backColor2" value="#c9a24b">
+        </div>
+        <div class="opt-row back-opts">
+          <span class="opt-name" id="lblBackPattern">Motief</span>
+          <select id="backPattern">
+            <option value="solid">Effen</option>
+            <option value="stars">Sterren</option>
+            <option value="runes">Runen</option>
+            <option value="stripes">Diagonale strepen</option>
+            <option value="dots">Stippen</option>
+            <option value="grid">Rooster</option>
+            <option value="crosshatch">Arcering</option>
+            <option value="scales">Schubben</option>
+            <option value="diamonds">Ruiten</option>
+          </select>
+        </div>
+        <div class="opt-row back-opts">
+          <span class="opt-name" id="lblBackImage">Afbeelding</span>
+          <input type="file" id="backImage" accept="image/*">
+        </div>
+        <div class="opt-row back-opts" id="imgScaleRow" hidden>
+          <span class="opt-name" id="lblBackScale">Grootte</span>
+          <input type="range" id="backScale" min="10" max="250" step="5" value="100">
+          <span id="backScaleVal" class="scale-val">100%</span>
+          <label class="tilelbl"><input type="checkbox" id="backTile"> <span id="lblBackTile">tegelen</span></label>
+          <button id="btnBackImgClear" class="btn btn-ghost" style="padding:3px 8px;font-size:11px">✕</button>
+        </div>
+      </div>
+      <p class="hint" id="backsHint">Achterkanten werken alleen in A6-modus: achter elk vel met 4 voorkanten komt een
+      gespiegeld vel met achterkanten. Print dubbelzijdig en laat omslaan over de <b>lange zijde</b>.</p>
+    </fieldset>
+
+    <div id="status" class="status"></div>
+    <p class="hint queue-info" id="queueInfo" hidden></p>
+    <p class="hint" id="hintExclude">Tip: klik op een kaartkop om die kaart bij het afdrukken over te slaan.
+    Overgeslagen kaarten gaan naar de lade onder de vellen en tellen niet mee in de printopdracht.</p>
+    <p class="credits" id="credits">Spreukdata: SRD 5.1 (OGL) via
+    <a href="https://github.com/5e-bits/5e-database" style="color:inherit">5e-bits/5e-database</a>, lokaal opgeslagen.</p>
+  </aside>
+
+  <section id="cardsWrap">
+    <div id="cards" class="cards size-l"></div>
+  </section>
+</main>
+
+<script src="data/spells.js?v=__BUILD__"></script>
+<script src="js/app.js?v=__BUILD__"></script>
+</body>
+</html>
